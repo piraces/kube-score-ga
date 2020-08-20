@@ -26,7 +26,8 @@ Score of your manifests from kube-score.
 Raw output from running kube-score with your manifests.
 
 ## Example usage
-
+```
 uses: piraces/kube-score-ga@v1
 with:
   manifests-folders: './manifests/*.yml'
+```
