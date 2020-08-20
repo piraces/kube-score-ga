@@ -1,0 +1,24 @@
+{
+  "name": "kube-score-ga",
+  "version": "1.0.0",
+  "description": "Github action to execute kube-score with selected manifests (YAML, Helm or Kustomize)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piraces/kube-score-ga.git"
+  },
+  "keywords": [],
+  "author": "Raúl Piracés Alastuey <raul@piraces.dev> (https://piraces.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/piraces/kube-score-ga/issues"
+  },
+  "homepage": "https://github.com/piraces/kube-score-ga#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0"
+  }
+}

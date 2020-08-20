@@ -1,0 +1,19 @@
+name: 'kube-score check'
+description: 'Uses the kube-score analysis tool to perform static code analysis of your Kubernetes object definitions'
+inputs:
+  kube-score-version:
+    description: 'kube-score version to use'
+    required: false
+    default: 'latest'
+  manifests-folders:
+    description: 'Array of relative paths to execute kube-score with (separated with commas). It is mandatory to establish a wildcard for the files or the concrete filename.'
+    required: true
+    default: 'latest'
+outputs:
+  score:
+    description: 'Score of your manifests from kube-score'
+  raw-output:
+    description: 'Raw output from running kube-score with your manifests'
+runs:
+  using: 'node12'
+  main: 'index.js'
