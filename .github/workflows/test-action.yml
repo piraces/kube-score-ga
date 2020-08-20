@@ -1,0 +1,18 @@
+on: [push]
+
+jobs:
+  test-action-job:
+    runs-on: ubuntu-latest
+    name: A job to test kube-score Github Action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './test/sample-manifests/*.yaml'
+      - name: Get the total score from the action
+        run: echo "The time was ${{ steps.ksga.outputs.score }}"
+      - name: Get the raw output from kube-score
+        run: echo "The time was ${{ steps.ksga.outputs.raw-output }}"
