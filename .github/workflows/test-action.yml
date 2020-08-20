@@ -13,6 +13,6 @@ jobs:
         with:
           manifests-folders: './test/sample-manifests/*.yaml'
       - name: Get the total score from the action
-        run: echo "The time was ${{ steps.ksga.outputs.score }}"
+        run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score
-        run: echo "The time was ${{ steps.ksga.outputs.raw-output }}"
+        run: echo "The raw output was ${{ steps.ksga.outputs.raw-output }}"
