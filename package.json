@@ -19,6 +19,10 @@
   "homepage": "https://github.com/piraces/kube-score-ga#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
-    "@actions/github": "^4.0.0"
+    "@actions/exec": "^1.0.4",
+    "@actions/github": "^4.0.0",
+    "@actions/io": "^1.0.2",
+    "@actions/tool-cache": "^1.6.0",
+    "request": "^2.88.2"
   }
 }
