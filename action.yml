@@ -15,4 +15,4 @@ outputs:
     description: 'Raw output from running kube-score with your manifests'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'lib/index.js'
