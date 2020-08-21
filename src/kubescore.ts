@@ -50,7 +50,7 @@ export async function getReleaseUrl(version: string | undefined): Promise<string
     const suffix = osInfo[1];
     core.info(`Running on OS '${platform}', architecture '${architecture}'`);
 
-    const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${platform}_${architecture}${suffix}`;
+    const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${version}_${platform}_${architecture}${suffix}`;
     core.info(`Release URL: ${releaseUrl}`);
     return releaseUrl;
 }
