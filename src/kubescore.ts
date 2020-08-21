@@ -36,7 +36,7 @@ export async function runKubeScore(): Promise<void> {
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
-    if (!!version) {
+    if (!version) {
         version = await getLatestVersionTag();
     }
     const architecture = getArchitecture();
@@ -48,7 +48,7 @@ export async function getReleaseUrl(version: string | undefined): Promise<string
 
     const platform = osInfo[0];
     const suffix = osInfo[1];
-    core.info(`Running on OS '${platform}', architecture ${architecture}`);
+    core.info(`Running on OS '${platform}', architecture '${architecture}'`);
 
     const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${platform}_${architecture}${suffix}`;
     core.info(`Release URL: ${releaseUrl}`);
