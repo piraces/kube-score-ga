@@ -16,7 +16,8 @@ const x64 = 'x64';
 
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
-    const url = getReleaseUrl(version);
+    const url = await getReleaseUrl(version);
+    core.info('Downloaded!');
     const downloadPath = await tc.downloadTool(url);
     await io.mv(downloadPath, path.join(downloadPath, 'kube-score'));
 
@@ -47,9 +48,11 @@ export async function getReleaseUrl(version: string | undefined): Promise<string
 
     const platform = osInfo[0];
     const suffix = osInfo[1];
+    core.info(`Running on OS '${platform}', architecture ${architecture}`);
 
-
-    return `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${platform}_${architecture}${suffix}`
+    const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${platform}_${architecture}${suffix}`;
+    core.info(`Release URL: ${releaseUrl}`);
+    return releaseUrl;
 }
 
 function getArchitecture(): string {
