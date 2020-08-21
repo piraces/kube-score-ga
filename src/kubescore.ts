@@ -17,8 +17,8 @@ const x64 = 'x64';
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
     const url = await getReleaseUrl(version);
-    core.info('Downloaded!');
     const downloadPath = await tc.downloadTool(url);
+    core.info('Downloaded!');
     await io.mv(downloadPath, path.join(downloadPath, 'kube-score'));
 
     core.info('Adding kube-score to the cache ...');

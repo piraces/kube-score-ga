@@ -5,7 +5,7 @@ const github = require('@actions/github');
 async function main() {
   try {
     const kubeScoreVersion = core.getInput('kube-score-version');
-    console.log(`Selected kube-score version ${kubeScoreVersion}!`);
+    console.log(`Selected kube-score ${kubeScoreVersion || 'latest'} version!`);
     const manifestsFolders = core.getInput('manifests-folders');
 
     await kubeScore.downloadKubeScore();
