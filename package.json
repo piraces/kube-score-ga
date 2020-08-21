@@ -5,7 +5,6 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "pack": "ncc build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
