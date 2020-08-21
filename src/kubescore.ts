@@ -1,6 +1,6 @@
 const os = require('os');
 const path = require('path');
-const request = require('request');
+const axios = require('axios');
 const core = require('@actions/core');
 const io = require('@actions/io');
 const exec = require('@actions/exec');
@@ -35,7 +35,7 @@ export async function runKubeScore(): Promise<void> {
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
-    if(!!version){
+    if (!!version) {
         version = await getLatestVersionTag();
     }
     const architecture = getArchitecture();
@@ -88,13 +88,10 @@ function getOperatingSystemInfo(): [string, string] {
 }
 
 async function getLatestVersionTag(): Promise<string> {
-    return await request('https://api.github.com/repos/zegl/kube-score/releases/latest',
-        { json: true },
-        (err: { message: string; }, res: any, body: { tag_name: string; }) => {
-            if (err) {
-                core.error("[FATAL] Error while retrieving latest version tag: " + err.message);
-                return;
-            }
-            return body.tag_name.replace('v', '');
+    return await axios.get('https://api.github.com/repos/zegl/kube-score/releases/latest').then(function (response: { data: { tag_name: string; }; }) {
+        return response.data.tag_name.replace('v', '');
+    }).catch(function (error: { message: string; }) {
+        core.error("[FATAL] Error while retrieving latest version tag: " + error.message);
+        return '';
     });
 }
