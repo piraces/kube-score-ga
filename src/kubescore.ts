@@ -17,12 +17,12 @@ const x64 = 'x64';
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
     const url = await getReleaseUrl(version);
-    if (!!url) {
+    if (!url) {
         core.setFailed('[FATAL] Unable to extract release URL.');
     }
     const downloadPath = await tc.downloadTool(url);
     core.info('Downloaded!');
-    await io.mkdirP(downloadPath);
+    core.info(`Moving tool from ${downloadPath} to ${path.join(downloadPath, 'kube-score')}`);
     await io.mv(downloadPath, path.join(downloadPath, 'kube-score'));
 
     core.info('Adding kube-score to the cache ...');
