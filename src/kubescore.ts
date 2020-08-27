@@ -30,6 +30,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     }
     const downloadPath = await tc.downloadTool(url);
     core.info('Downloaded!');
+
     await io.mkdirP(binPath);
     const toolDir = path.join(binPath, 'kube-score' + suffix);
     core.info(`Moving tool from ${downloadPath} to ${toolDir}`);
@@ -49,22 +50,13 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
-
         glob(actualDir, async function (err: any, files: any) {
-            if(err){
-                core.error(err);
-            }
-            for (const file of files) {
-                const exitCode = await exec.exec('kube-score', ['score', file]);
-                if(exitCode === 0){
-                    core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
-                } else {
-
-                }
-
+            if (err) {
+                core.setFailed(err);
+            } else {
+                await processFilesWithKubeScore(files);
             }
         });
-
     }
 }
 
@@ -142,4 +134,19 @@ async function getLatestVersionTag(): Promise<string> {
         core.setFailed('[FATAL] Error while retrieving latest version tag: ' + error.message);
         return '';
     });
+}
+
+async function processFilesWithKubeScore(files: Array<string>) {
+    for (const file of files) {
+        core.exportVariable('SELECTED_COLOR', '');
+        core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
+        const exitCode = await exec.exec('kube-score', ['score', file]);
+        if (exitCode === 0) {
+            core.exportVariable('SELECTED_COLOR', 'green');
+            core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
+        } else {
+            core.exportVariable('SELECTED_COLOR', 'red');
+            core.setFailed(`[KUBE-SCORE] Scan for file '${file}' failed...`);
+        }
+    }
 }
