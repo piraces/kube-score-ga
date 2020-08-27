@@ -45,8 +45,11 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     }
 }
 
-export async function runKubeScore(): Promise<void> {
-    await exec.exec( 'kube-score', ['version']);
+export async function runKubeScore(dirs: Array<string>): Promise<void> {
+    for (const dir of dirs) {
+        const exitCode = await exec.exec( 'kube-score', ['score', dir]);
+        core.info(`[SCORE] Exit code for ${dir}: ${exitCode}`);
+    }
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {

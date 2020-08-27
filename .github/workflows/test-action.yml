@@ -11,7 +11,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: ksga
         with:
-          manifests-folders: './test/sample-manifests/*.yaml'
+          manifests-folders: './test/sample-manifests/*.yaml', './test/sample-policy-manifest/*.yaml'
       - name: Get the total score from the action
         run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score
@@ -27,7 +27,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: ksga
         with:
-          manifests-folders: './test/sample-manifests/*.yaml'
+          manifests-folders: './test/sample-manifests/*.yaml', './test/sample-policy-manifest/*.yaml'
       - name: Get the total score from the action
         run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score
@@ -43,7 +43,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: ksga
         with:
-          manifests-folders: './test/sample-manifests/*.yaml'
+          manifests-folders: './test/sample-manifests/*.yaml', './test/sample-policy-manifest/*.yaml'
       - name: Get the total score from the action
         run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score
