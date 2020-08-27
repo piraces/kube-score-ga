@@ -11,8 +11,8 @@ async function main() {
     await kubeScore.downloadKubeScore();
     await kubeScore.runKubeScore();
 
-    core.setOutput("score", 90);
-    core.setOutput("raw-output", "Just testing");
+    core.setOutput('score', 90);
+    core.setOutput('raw-output', 'Just testing');
   } catch (error) {
     core.setFailed(error.message);
   }
