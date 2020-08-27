@@ -51,7 +51,7 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
         const files = await getFilesInActualDir(actualDir);
-        core.info(files);
+        files.forEach(core.info);
         await processFilesWithKubeScore(files);
     }
 }
