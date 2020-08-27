@@ -55,9 +55,11 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
                 core.setFailed(err);
             } else {
                 await processFilesWithKubeScore(files);
+                core.info(`[KUBE-SCORE] Finished scan of directory: '${dir}'`);
             }
         });
     }
+    core.info('[KUBE-SCORE] Execution finished');
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
