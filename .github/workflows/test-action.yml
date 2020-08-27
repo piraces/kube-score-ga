@@ -2,7 +2,7 @@ on: [push]
 
 jobs:
   test-action-job:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: A job to test kube-score Github Action
     steps:
       - name: Checkout
