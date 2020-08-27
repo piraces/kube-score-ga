@@ -123,13 +123,13 @@ function getBinPathByOperatingSystem(): string {
     }
 }
 
-async function getFilesInActualDir(actualDir: string): Promise<string[]> {
-    return await glob(actualDir, (err: any, files: any) => {
+function getFilesInActualDir(actualDir: string): Promise<string[]> {
+    return glob(actualDir, (err: any, files: any) => {
         if (err) {
             core.setFailed(err);
             return [];
         } else {
-            return files as string[];
+            return files;
         }
     });
 }
@@ -143,7 +143,7 @@ async function getLatestVersionTag(): Promise<string> {
     });
 }
 
-async function processFilesWithKubeScore(files: Array<string>) {
+async function processFilesWithKubeScore(files: string[]) {
     for (const file of files) {
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
         const exitCode = await exec.exec('kube-score', ['score', file]);
