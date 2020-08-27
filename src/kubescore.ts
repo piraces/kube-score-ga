@@ -18,6 +18,7 @@ const WindowsBinPath = 'D:\\a\\bin\\';
 const UnixBinPath = '/home/runner/bin/';
 
 const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
+const suffix = os.platform() === 'win32' ? '.exe' : '';
 
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
@@ -28,11 +29,12 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     const downloadPath = await tc.downloadTool(url);
     core.info('Downloaded!');
     await io.mkdirP(binPath);
-    const toolDir = path.join(binPath, 'kube-score');
+    const toolDir = path.join(binPath, 'kube-score' + suffix);
     core.info(`Moving tool from ${downloadPath} to ${toolDir}`);
     await exec.exec('dir', [downloadPath]);
     await exec.exec('dir', [binPath]);
     await io.mv(downloadPath, toolDir);
+    await exec.exec('dir', [binPath]);
     core.addPath(toolDir);
 
     core.info('Adding kube-score to the cache...');
