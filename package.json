@@ -24,7 +24,8 @@
     "@actions/github": "^4.0.0",
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^1.6.0",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "glob": "^7.1.6"
   },
   "devDependencies": {
     "typescript": "^4.0.2"

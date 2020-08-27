@@ -5,6 +5,7 @@ const core = require('@actions/core');
 const io = require('@actions/io');
 const exec = require('@actions/exec');
 const tc = require('@actions/tool-cache');
+const glob = require("glob");
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -48,9 +49,17 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
-        await exec.exec('dir', [process.cwd()]);
-        const exitCode = await exec.exec( 'kube-score', ['score', actualDir]);
-        core.info(`[SCORE] Exit code for ${dir}: ${exitCode}`);
+
+        glob(actualDir, async function (err: any, files: any) {
+            if(err){
+                core.error(err);
+            }
+            for (const file of files) {
+                const exitCode = await exec.exec('kube-score', ['score', file]);
+                core.info(`[SCORE] Exit code for ${file}: ${exitCode}`);
+            }
+        });
+
     }
 }
 
@@ -59,14 +68,12 @@ export async function getReleaseUrl(version: string | undefined): Promise<string
         version = await getLatestVersionTag();
     }
     const architecture = getArchitecture();
-    const osInfo = getOperatingSystemInfo();
+    const platform = getOperatingSystem();
 
-    if (!architecture || !osInfo) {
+    if (!architecture || !platform) {
         return '';
     }
 
-    const platform = osInfo[0];
-    const suffix = osInfo[1];
     core.info(`Running on OS '${platform}', architecture '${architecture}'`);
 
     const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${version}_${platform}_${architecture}${suffix}`;
@@ -93,19 +100,19 @@ function getArchitecture(): string {
     }
 }
 
-function getOperatingSystemInfo(): [string, string] {
+function getOperatingSystem(): string {
     const osPlatform = os.platform();
 
     switch (osPlatform) {
         case MacOS:
-            return ['darwin', ''];
+            return 'darwin';
         case Windows:
-            return ['windows', '.exe'];
+            return 'windows';
         case Linux:
-            return ['linux', ''];
+            return 'linux';
         default:
             core.setFailed('[FATAL] Unsupported OS... Supported: MacOS, Windows, Linux.');
-            return ['', ''];
+            return '';
     }
 }
 
