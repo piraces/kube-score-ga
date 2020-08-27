@@ -32,7 +32,8 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     await io.mv(downloadPath, path.join(binPath, 'kube-score'));
 
     core.info('Adding kube-score to the cache ...');
-    const toolPath = await tc.cacheDir(binPath, 'kube-score', version || getLatestVersionTag());
+    const actualVersion = version || await getLatestVersionTag();
+    const toolPath = await tc.cacheDir(binPath, 'kube-score', actualVersion);
     core.info('Done');
 
     core.addPath(toolPath);
