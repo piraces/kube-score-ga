@@ -24,4 +24,9 @@ async function main() {
   }
 }
 
+
+process.on('unhandledRejection', () => {
+  core.info(`[KUBE-SCORE] Scan failed to succeed...`);
+});
+
 main();

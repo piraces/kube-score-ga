@@ -56,7 +56,12 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
             }
             for (const file of files) {
                 const exitCode = await exec.exec('kube-score', ['score', file]);
-                core.info(`[SCORE] Exit code for ${file}: ${exitCode}`);
+                if(exitCode === 0){
+                    core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
+                } else {
+
+                }
+
             }
         });
 
