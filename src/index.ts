@@ -2,7 +2,7 @@ const kubeScore = require('./kubescore');
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const ignoreExitCode = core.getInput('ignore-exit-code');
+const ignoreExitCode = core.getInput('ignore-exit-code') as boolean;
 
 async function main() {
     try {
@@ -29,6 +29,7 @@ async function main() {
 
 
 process.on('unhandledRejection', () => {
+    core.info(ignoreExitCode);
     if (ignoreExitCode) {
         core.setFailed('[KUBE-SCORE] Scan failed...');
     } else {
