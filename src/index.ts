@@ -2,8 +2,6 @@ const kubeScore = require('./kubescore');
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-const ignoreExitCode = core.getInput('ignore-exit-code').toLowerCase() === 'true';
-
 async function main() {
     try {
         const kubeScoreVersion = core.getInput('kube-score-version');

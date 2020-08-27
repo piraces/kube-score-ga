@@ -22,6 +22,8 @@ const DarwinBinPath = '/Users/runner/bin';
 const binPath = getBinPathByOperatingSystem();
 const suffix = os.platform() === 'win32' ? '.exe' : '';
 
+const ignoreExitCode = core.getInput('ignore-exit-code').toLowerCase() === 'true';
+
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
     const url = await getReleaseUrl(version);
