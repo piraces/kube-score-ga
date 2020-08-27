@@ -1,9 +1,25 @@
 on: [push]
 
 jobs:
-  test-action-job:
+  test-action-job-win32:
     runs-on: windows-latest
-    name: A job to test kube-score Github Action
+    name: A job to test kube-score Github Action (Win32)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './test/sample-manifests/*.yaml'
+      - name: Get the total score from the action
+        run: echo "The total score was ${{ steps.ksga.outputs.score }}"
+      - name: Get the raw output from kube-score
+        run: echo "The raw output was ${{ steps.ksga.outputs.raw-output }}"
+
+  test-action-job-unix:
+    runs-on: ubuntu-latest
+    name: A job to test kube-score Github Action (Unix)
     steps:
       - name: Checkout
         uses: actions/checkout@v2
