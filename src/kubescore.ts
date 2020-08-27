@@ -6,6 +6,7 @@ const io = require('@actions/io');
 const exec = require('@actions/exec');
 const tc = require('@actions/tool-cache');
 const glob = require("glob");
+const util = require('util')
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -51,6 +52,7 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
         const files = await getFilesInActualDir(actualDir);
+        core.info(util.inspect(files, {showHidden: false, depth: null}));
         files.forEach(core.info);
         await processFilesWithKubeScore(files);
     }
