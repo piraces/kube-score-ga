@@ -59,7 +59,6 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
             }
         });
     }
-    core.info('[KUBE-SCORE] Execution finished');
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
@@ -142,6 +141,7 @@ async function processFilesWithKubeScore(files: Array<string>) {
     for (const file of files) {
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
         const exitCode = await exec.exec('kube-score', ['score', file]);
+        core.info(`[KUBE-SCORE] Scanned file '${file}'`);
         if (exitCode !== 0) {
             core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
         }
