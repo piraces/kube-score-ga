@@ -14,6 +14,11 @@ const ARM = 'arm';
 const ARM64 = 'arm64';
 const x64 = 'x64';
 
+const WindowsBinPath = 'D:\a\'';
+const UnixBinPath = '/home/runner/bin';
+
+const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
+
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
     const url = await getReleaseUrl(version);
@@ -22,11 +27,12 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     }
     const downloadPath = await tc.downloadTool(url);
     core.info('Downloaded!');
-    core.info(`Moving tool from ${downloadPath} to ${path.join(downloadPath, 'kube-score')}`);
-    await io.mv(downloadPath, path.join(downloadPath, 'kube-score'));
+    await io.mkdirP(binPath)
+    core.info(`Moving tool from ${downloadPath} to ${path.join(binPath, 'kube-score')}`);
+    await io.mv(downloadPath, path.join(binPath, 'kube-score'));
 
     core.info('Adding kube-score to the cache ...');
-    const toolPath = await tc.cacheDir(downloadPath, 'kube-score', version || getLatestVersionTag());
+    const toolPath = await tc.cacheDir(binPath, 'kube-score', version || getLatestVersionTag());
     core.info('Done');
 
     core.addPath(toolPath);
