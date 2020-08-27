@@ -47,7 +47,10 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 
 export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
-        const exitCode = await exec.exec( 'kube-score', ['score', dir]);
+        const actualDir = path.join('.', dir);
+        await exec.exec('dir', ['.']);
+        await exec.exec('dir', [actualDir]);
+        const exitCode = await exec.exec( 'kube-score', ['score', actualDir]);
         core.info(`[SCORE] Exit code for ${dir}: ${exitCode}`);
     }
 }
