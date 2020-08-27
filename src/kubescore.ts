@@ -18,7 +18,6 @@ const WindowsBinPath = 'D:\\a\\bin\\';
 const UnixBinPath = '/home/runner/bin/';
 
 const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
-const suffix = os.platform() === 'win32' ? '.exe' : '';
 
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
     core.info('Downloading kube-score...');
@@ -29,22 +28,23 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     const downloadPath = await tc.downloadTool(url);
     core.info('Downloaded!');
     await io.mkdirP(binPath);
-    core.info(`Moving tool from ${downloadPath} to ${path.join(binPath, 'kube-score')}`);
-    await io.mv(downloadPath, path.join(binPath, 'kube-score'));
-    core.addPath(binPath);
+    const toolDir = path.join(binPath, 'kube-score');
+    core.info(`Moving tool from ${downloadPath} to ${toolDir}`);
+    await io.mv(downloadPath, toolDir);
+    core.addPath(toolDir);
 
-    core.info('Adding kube-score to the cache ...');
+    core.info('Adding kube-score to the cache...');
     const actualVersion = version || await getLatestVersionTag();
-    const toolPath = await tc.cacheDir(binPath, 'kube-score', actualVersion);
+    await tc.cacheDir(toolDir, 'kube-score', actualVersion);
     core.info('Done');
 
     if (os.platform() !== 'win32') {
-        await exec.exec('chmod', ['+x', toolPath]);
+        await exec.exec('chmod', ['+x', toolDir]);
     }
 }
 
 export async function runKubeScore(): Promise<void> {
-    await exec.exec( 'kube-score' + suffix, ['version']);
+    await exec.exec( 'kube-score', ['version']);
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
