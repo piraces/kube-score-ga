@@ -32,7 +32,7 @@ process.on('unhandledRejection', () => {
     if (ignoreExitCode) {
         core.setFailed('[KUBE-SCORE] Scan failed...');
     } else {
-        core.error('[KUBE-SCORE] Scan failed...');
+        core.info('[FAILED][KUBE-SCORE] Scan failed...');
     }
 
 });
