@@ -15,9 +15,10 @@ const ARM64 = 'arm64';
 const x64 = 'x64';
 
 const WindowsBinPath = 'D:\\a\\bin\\';
-const UnixBinPath = '/home/runner/bin/';
+const LinuxBinPath = '/home/runner/bin/';
+const DarwinBinPath = '/Users/runner/bin';
 
-const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
+const binPath = getBinPathByOperatingSystem();
 const suffix = os.platform() === 'win32' ? '.exe' : '';
 
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
@@ -100,6 +101,20 @@ function getOperatingSystemInfo(): [string, string] {
         default:
             core.setFailed('[FATAL] Unsupported OS... Supported: MacOS, Windows, Linux.');
             return ['', ''];
+    }
+}
+
+function getBinPathByOperatingSystem(): string {
+    switch (os.platform()) {
+        case MacOS:
+            return DarwinBinPath;
+        case Windows:
+            return WindowsBinPath;
+        case Linux:
+            return LinuxBinPath;
+        default:
+            core.setFailed('[FATAL] Unsupported OS... Supported: MacOS, Windows, Linux.');
+            return '';
     }
 }
 
