@@ -143,7 +143,7 @@ async function processFilesWithKubeScore(files: string[]) {
             }
         } catch {
             if (ignoreExitCode) {
-                core.info('[FAILED][KUBE-SCORE] Scan failed...');
+                core.error('[FAILED][KUBE-SCORE] Scan failed...');
             } else {
                 core.setFailed('[KUBE-SCORE] Scan failed...');
             }
