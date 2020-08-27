@@ -50,14 +50,9 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
-        await glob(actualDir, async (err: any, files: any) => {
-            if (err) {
-                core.setFailed(err);
-            } else {
-                await processFilesWithKubeScore(files);
-                core.info(`[KUBE-SCORE] Finished scan of directory: '${dir}'`);
-            }
-        });
+        const files = await getFilesInActualDir(actualDir);
+        core.info(files);
+        await processFilesWithKubeScore(files);
     }
 }
 
@@ -126,6 +121,17 @@ function getBinPathByOperatingSystem(): string {
             core.setFailed('[FATAL] Unsupported OS... Supported: MacOS, Windows, Linux.');
             return '';
     }
+}
+
+async function getFilesInActualDir(actualDir: string): Promise<Array<string>> {
+    return await glob(actualDir, async (err: any, files: any) => {
+        if (err) {
+            core.setFailed(err);
+            return [];
+        } else {
+            return files;
+        }
+    });
 }
 
 async function getLatestVersionTag(): Promise<string> {

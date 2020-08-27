@@ -3,7 +3,7 @@ on: [push]
 jobs:
   test-action-job-win32:
     runs-on: windows-latest
-    name: A job to test kube-score Github Action (Win32)
+    name: kube-score (Win32)
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
 
   test-action-job-linux:
     runs-on: ubuntu-latest
-    name: A job to test kube-score Github Action (Linux)
+    name: kube-score (Linux)
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
 
   test-action-job-macos:
     runs-on: macos-latest
-    name: A job to test kube-score Github Action (MacOS)
+    name: kube-score (MacOS)
     steps:
       - name: Checkout
         uses: actions/checkout@v2
