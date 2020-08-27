@@ -30,9 +30,9 @@ async function main() {
 
 process.on('unhandledRejection', () => {
     if (ignoreExitCode) {
-        core.setFailed('[KUBE-SCORE] Scan failed...');
-    } else {
         core.info('[FAILED][KUBE-SCORE] Scan failed...');
+    } else {
+        core.setFailed('[KUBE-SCORE] Scan failed...');
     }
 
 });

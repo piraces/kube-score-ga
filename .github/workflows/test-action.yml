@@ -29,6 +29,7 @@ jobs:
         id: ksga
         with:
           manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
+          ignore-exit-code: 'true'
       - name: Get the total score from the action
         run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score
@@ -45,6 +46,7 @@ jobs:
         id: ksga
         with:
           manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
+          ignore-exit-code: 'true'
       - name: Get the total score from the action
         run: echo "The total score was ${{ steps.ksga.outputs.score }}"
       - name: Get the raw output from kube-score

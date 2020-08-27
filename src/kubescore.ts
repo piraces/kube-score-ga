@@ -50,7 +50,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
-        glob(actualDir, async function (err: any, files: any) {
+        await glob(actualDir, async (err: any, files: any) => {
             if (err) {
                 core.setFailed(err);
             } else {
