@@ -35,7 +35,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 
     core.info('Adding kube-score to the cache...');
     const actualVersion = version || await getLatestVersionTag();
-    await tc.cacheDir(toolDir, 'kube-score', actualVersion);
+    await tc.cacheDir(binPath, 'kube-score', actualVersion);
     core.info('Done');
 
     if (os.platform() !== 'win32') {
