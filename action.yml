@@ -8,6 +8,10 @@ inputs:
   manifests-folders:
     description: 'Array of relative paths to execute kube-score with (separated with commas). It is mandatory to establish a wildcard for the files or the concrete filename.'
     required: true
+  ignore-exit-code:
+    description: 'Ignore exit code from kube-score and continue on error (for information purposes only)'
+    required: false
+    default: 'false' # Not to ignore exit code
 outputs:
   score:
     description: 'Score of your manifests from kube-score'

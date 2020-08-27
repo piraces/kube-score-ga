@@ -2,11 +2,14 @@ const kubeScore = require('./kubescore');
 const core = require('@actions/core');
 const github = require('@actions/github');
 
+const ignoreExitCode = core.getInput('ignore-exit-code');
+
 async function main() {
     try {
         const kubeScoreVersion = core.getInput('kube-score-version');
         console.log(`Selected kube-score ${kubeScoreVersion || 'latest'} version!`);
         const manifestsFolders = core.getInput('manifests-folders');
+
 
         if (!manifestsFolders) {
             core.setFailed('[FATAL] Input for manifests-folders is mandatory');
@@ -26,8 +29,12 @@ async function main() {
 
 
 process.on('unhandledRejection', () => {
-    core.exportVariable('SELECTED_COLOR', 'red');
-    core.setFailed(`[KUBE-SCORE] Scan failed...`);
+    if (ignoreExitCode) {
+        core.setFailed('[KUBE-SCORE] Scan failed...');
+    } else {
+        core.error('[KUBE-SCORE] Scan failed...');
+    }
+
 });
 
 main();

@@ -138,15 +138,10 @@ async function getLatestVersionTag(): Promise<string> {
 
 async function processFilesWithKubeScore(files: Array<string>) {
     for (const file of files) {
-        core.exportVariable('SELECTED_COLOR', '');
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
         const exitCode = await exec.exec('kube-score', ['score', file]);
-        if (exitCode === 0) {
-            core.exportVariable('SELECTED_COLOR', 'green');
+        if (exitCode !== 0) {
             core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
-        } else {
-            core.exportVariable('SELECTED_COLOR', 'red');
-            core.setFailed(`[KUBE-SCORE] Scan for file '${file}' failed...`);
         }
     }
 }
