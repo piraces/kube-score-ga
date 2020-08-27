@@ -124,7 +124,7 @@ function getBinPathByOperatingSystem(): string {
 }
 
 async function getFilesInActualDir(actualDir: string): Promise<string[]> {
-    return await glob(actualDir, async (err: any, files: any) => {
+    return await glob(actualDir, (err: any, files: any) => {
         if (err) {
             core.setFailed(err);
             return [];
