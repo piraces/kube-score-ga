@@ -14,7 +14,7 @@ const ARM = 'arm';
 const ARM64 = 'arm64';
 const x64 = 'x64';
 
-const WindowsBinPath = 'D:\a\'';
+const WindowsBinPath = 'D:\\a\\bin';
 const UnixBinPath = '/home/runner/bin';
 
 const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
