@@ -14,8 +14,8 @@ const ARM = 'arm';
 const ARM64 = 'arm64';
 const x64 = 'x64';
 
-const WindowsBinPath = 'D:\\a\\bin';
-const UnixBinPath = '/home/runner/bin';
+const WindowsBinPath = 'D:\\a\\bin\\';
+const UnixBinPath = '/home/runner/bin/';
 
 const binPath = os.platform() === 'win32' ? WindowsBinPath : UnixBinPath;
 
@@ -43,7 +43,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
 }
 
 export async function runKubeScore(): Promise<void> {
-    await exec.exec('kube-score', ['version']);
+    await exec.exec(binPath + 'kube-score', ['version']);
 }
 
 export async function getReleaseUrl(version: string | undefined): Promise<string> {
