@@ -6,7 +6,6 @@ const io = require('@actions/io');
 const exec = require('@actions/exec');
 const tc = require('@actions/tool-cache');
 const glob = require("glob");
-const util = require('util')
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -52,8 +51,6 @@ export async function runKubeScore(dirs: Array<string>): Promise<void> {
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
         const files = glob.sync(actualDir, {});
-        core.info(util.inspect(files, {showHidden: false, depth: null}));
-        files.forEach(core.info);
         await processFilesWithKubeScore(files);
     }
 }
@@ -137,10 +134,20 @@ async function getLatestVersionTag(): Promise<string> {
 async function processFilesWithKubeScore(files: string[]) {
     for (const file of files) {
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
-        const exitCode = await exec.exec('kube-score', ['score', file]);
-        core.info(`[KUBE-SCORE] Scanned file '${file}'`);
-        if (exitCode !== 0) {
-            core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
+        try {
+            const exitCode = await exec.exec('kube-score', ['score', file]);
+            if (exitCode !== 0) {
+                core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
+            }
+        } catch {
+            if (ignoreExitCode) {
+                core.info('[FAILED][KUBE-SCORE] Scan failed...');
+            } else {
+                core.setFailed('[KUBE-SCORE] Scan failed...');
+            }
         }
+
+        core.info(`[KUBE-SCORE] Scanned file '${file}'`);
+
     }
 }
