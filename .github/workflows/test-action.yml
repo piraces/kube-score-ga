@@ -28,6 +28,7 @@ jobs:
         with:
           manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
+          kube-score-version: '1.8.0'
 
   test-action-job-macos:
     runs-on: macos-latest
@@ -41,3 +42,4 @@ jobs:
         with:
           manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
+          kube-score-version: '1.8.0'

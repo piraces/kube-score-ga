@@ -13,7 +13,7 @@ async function main() {
 
         const foldersArray = manifestsFolders.split(',');
 
-        await kubeScore.downloadKubeScore();
+        await kubeScore.downloadKubeScore(kubeScoreVersion || undefined);
         await kubeScore.runKubeScore(foldersArray);
     } catch (error) {
         core.setFailed(error.message);
