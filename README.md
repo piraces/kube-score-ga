@@ -16,7 +16,7 @@ This action executes kube-score with selected manifests (with support for YAML, 
 
 **Required**: An array of relative paths containing manifests to analyze with kube-score (separated with commas). It is mandatory to establish a wildcard for the files or the concrete filename.
 
-Example: `./manifests/*.yml, ./other/manifests/*.yml`
+Example: `./manifests/*.yml,./other/manifests/*.yml`
 
 ### `ignore-exit-code`
 

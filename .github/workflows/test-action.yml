@@ -26,7 +26,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: ksga
         with:
-          manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
+          manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
           kube-score-version: '1.8.0'
 
@@ -40,6 +40,6 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: ksga
         with:
-          manifests-folders: './test/sample-manifests/*.yaml,./test/sample-policy-manifest/*.yaml'
+          manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
           kube-score-version: '1.8.0'
