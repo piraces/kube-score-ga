@@ -24,6 +24,17 @@ const binPath = getBinPathByOperatingSystem();
 const ignoreExitCode = core.getInput('ignore-exit-code').toLowerCase() === 'true';
 
 export async function downloadKubeScore(version: string | undefined = undefined): Promise<void> {
+    core.info('Getting kube-score binary...');
+    const actualVersion = version || (await getLatestVersionTag());
+    const actualArchitecture = getArchitecture();
+
+    const cachedToolDir = tc.find('kube-score', actualVersion, actualArchitecture);
+    if (cachedToolDir) {
+        core.info('kube-score found in cache! No need to download it...');
+        core.addPath(cachedToolDir);
+        return;
+    }
+
     core.info('Downloading kube-score...');
     const url = await getReleaseUrl(version);
     if (!url) {
@@ -39,8 +50,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     core.addPath(binPath);
 
     core.info('Adding kube-score to the cache...');
-    const actualVersion = version || (await getLatestVersionTag());
-    await tc.cacheDir(binPath, 'kube-score', actualVersion);
+    await tc.cacheDir(binPath, 'kube-score', actualVersion, actualArchitecture);
     core.info('Done');
 
     if (os.platform() !== 'win32') {
