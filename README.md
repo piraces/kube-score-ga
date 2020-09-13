@@ -3,8 +3,7 @@
 ![Node.js CI (build, test, lint)](https://github.com/piraces/kube-score-ga/workflows/Node.js%20CI/badge.svg)
 ![Action CI](https://github.com/piraces/kube-score-ga/workflows/Action%20CI/badge.svg)
 
-**(WIP)**
-This action executes kube-score with selected manifests (with support for YAML, Helm or Kustomize).
+This action executes kube-score with selected manifests (with support for YAML, Helm or Kustomize manifests).
 
 ## Inputs
 
