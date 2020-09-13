@@ -1,11 +1,11 @@
-const os = require('os');
-const path = require('path');
-const axios = require('axios');
-const core = require('@actions/core');
-const io = require('@actions/io');
-const exec = require('@actions/exec');
-const tc = require('@actions/tool-cache');
-const glob = require("glob");
+import os = require('os');
+import path = require('path');
+import axios = require('axios');
+import core = require('@actions/core');
+import io = require('@actions/io');
+import exec = require('@actions/exec');
+import tc = require('@actions/tool-cache');
+import glob = require('glob');
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -40,7 +40,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     core.addPath(binPath);
 
     core.info('Adding kube-score to the cache...');
-    const actualVersion = version || await getLatestVersionTag();
+    const actualVersion = version || (await getLatestVersionTag());
     await tc.cacheDir(binPath, 'kube-score', actualVersion);
     core.info('Done');
 
@@ -125,12 +125,15 @@ function getBinPathByOperatingSystem(): string {
 }
 
 async function getLatestVersionTag(): Promise<string> {
-    return await axios.get('https://api.github.com/repos/zegl/kube-score/releases/latest').then(function (response: { data: { tag_name: string; }; }) {
-        return response.data.tag_name.replace('v', '');
-    }).catch(function (error: { message: string; }) {
-        core.setFailed('[FATAL] Error while retrieving latest version tag: ' + error.message);
-        return '';
-    });
+    return await axios.default
+        .get('https://api.github.com/repos/zegl/kube-score/releases/latest')
+        .then(function (response: { data: { tag_name: string } }) {
+            return response.data.tag_name.replace('v', '');
+        })
+        .catch(function (error: { message: string }) {
+            core.setFailed('[FATAL] Error while retrieving latest version tag: ' + error.message);
+            return '';
+        });
 }
 
 async function processFilesWithKubeScore(files: string[]) {
@@ -150,6 +153,5 @@ async function processFilesWithKubeScore(files: string[]) {
         }
 
         core.info(`[KUBE-SCORE] Scanned file '${file}'`);
-
     }
 }
