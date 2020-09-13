@@ -4,7 +4,7 @@
   "description": "Github action to execute kube-score with selected manifests (YAML, Helm or Kustomize)",
   "main": "lib/index.js",
   "scripts": {
-    "build": "ncc build index.js -o lib",
+    "build": "ncc build src/index.ts -o lib",
     "lint": "eslint **/*.ts --quiet --fix",
     "lint:no-fix": "eslint **/*.ts --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
