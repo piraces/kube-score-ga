@@ -5,6 +5,18 @@
 
 This action executes kube-score with selected manifests (with support for YAML, Helm or Kustomize manifests).
 
+## Features
+
+💻 Compatible with Windows, Linux and Darwin Operating Systems.
+
+🏗 Supported architectures: ARMv6, ARM64, x64.
+
+📂 Multiple folders and files supported within one run of the action (with wildcards support).
+
+🔢 All versions of kube-score can be selected and used.
+
+⚡ Support for caching kube-score tool to improve speed in subsequent runs.
+
 ## Inputs
 
 ### `kube-score-version`
@@ -23,11 +35,15 @@ Example: `./manifests/*.yml,./other/manifests/*.yml`
 
 ## Outputs
 
-This actions does not contain outputs.
+This action does not contain outputs.
 
 ## Example usage
+**Note**: it is necessary to perform a checkout of the repository before running the action.
 ```
-uses: piraces/kube-score-ga@v1
-with:
-  manifests-folders: './manifests/*.yml'
+- name: Checkout
+  uses: actions/checkout@v2
+- name: kube-score check
+  uses: piraces/kube-score-ga@v0.1.1
+  with:
+    manifests-folders: './manifests/*.yml'
 ```
