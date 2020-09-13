@@ -20,7 +20,6 @@ const LinuxBinPath = '/home/runner/bin/';
 const DarwinBinPath = '/Users/runner/bin';
 
 const binPath = getBinPathByOperatingSystem();
-const suffix = os.platform() === 'win32' ? '.exe' : '';
 
 const ignoreExitCode = core.getInput('ignore-exit-code').toLowerCase() === 'true';
 
@@ -34,7 +33,7 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     core.info('Downloaded!');
 
     await io.mkdirP(binPath);
-    const toolDir = path.join(binPath, 'kube-score' + suffix);
+    const toolDir = path.join(binPath, 'kube-score' + getSuffix());
     core.info(`Moving tool from ${downloadPath} to ${toolDir}`);
     await io.mv(downloadPath, toolDir);
     core.addPath(binPath);
@@ -70,7 +69,7 @@ export async function getReleaseUrl(version: string | undefined): Promise<string
 
     core.info(`Running on OS '${platform}', architecture '${architecture}'`);
 
-    const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${version}_${platform}_${architecture}${suffix}`;
+    const releaseUrl = `https://github.com/zegl/kube-score/releases/download/v${version}/kube-score_${version}_${platform}_${architecture}${getSuffix()}`;
     core.info(`Release URL: ${releaseUrl}`);
     return releaseUrl;
 }
@@ -108,6 +107,10 @@ function getOperatingSystem(): string {
             core.setFailed('[FATAL] Unsupported OS... Supported: MacOS, Windows, Linux.');
             return '';
     }
+}
+
+function getSuffix(): string {
+    return os.platform() === 'win32' ? '.exe' : '';
 }
 
 function getBinPathByOperatingSystem(): string {
