@@ -1,5 +1,8 @@
 name: 'kube-score check'
 description: 'Uses the kube-score analysis tool to perform static code analysis of your Kubernetes object definitions'
+branding:
+  icon: 'box'
+  color: 'blue'
 inputs:
   kube-score-version:
     description: 'kube-score version to use'
@@ -12,11 +15,6 @@ inputs:
     description: 'Ignore exit code from kube-score and continue on error (for information purposes only)'
     required: false
     default: 'false' # Not to ignore exit code
-outputs:
-  score:
-    description: 'Score of your manifests from kube-score'
-  raw-output:
-    description: 'Raw output from running kube-score with your manifests'
 runs:
   using: 'node12'
   main: 'lib/index.js'
