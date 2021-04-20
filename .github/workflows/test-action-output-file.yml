@@ -1,4 +1,4 @@
-name: Action CI
+name: Action (with artifacts) CI
 
 on: [push]
 
