@@ -181,6 +181,10 @@ async function processFilesWithKubeScore(files: string[], stream: fs.WriteStream
             } else {
                 core.setFailed('[KUBE-SCORE] Scan failed...');
             }
+
+            if (stream) {
+                stream.write(`\n\n*** End analysis for file '${file}' ***\n\n`);
+            }
         }
 
         core.info(`[KUBE-SCORE] Scanned file '${file}'`);
