@@ -15,6 +15,9 @@ inputs:
     description: 'Ignore exit code from kube-score and continue on error (for information purposes only)'
     required: false
     default: 'false' # Not to ignore exit code
+  output-file:
+    description: 'Generate an output file with the results of kube-score analysis for each manifest file (instead of printing in the standard output). Each analysis is separated by a text block.'
+    default: '' # No output file
 runs:
-  using: 'node12'
+  using: 'node14'
   main: 'lib/index.js'

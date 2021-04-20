@@ -13,6 +13,8 @@ This action executes kube-score with selected manifests (with support for YAML, 
 
 📂 Multiple folders and files supported within one run of the action (with wildcards support).
 
+📤 Export all analysis results to an output file.
+
 🔢 All versions of kube-score can be selected and used.
 
 ⚡ Support for caching kube-score tool to improve speed in subsequent runs.
@@ -33,9 +35,14 @@ Example: `./manifests/*.yml,./other/manifests/*.yml`
 
 *(Optional)*: Will ignore the exit code provided by `kube-score`, will always pass the check. This could be useful in case of using the action in an information way.
 
+### `output-file`
+
+*(Optional)*: Generate an output file with the results of `kube-score` analysis for each manifest file (instead of printing in the standard output).
+Each analysis is separated by a text block.
+
 ## Outputs
 
-This action does not contain outputs.
+This action does not contain outputs. Only if `output-file` is provided, then a file will be generated but no handled as an output.
 
 ## Example usage
 **Note**: it is necessary to perform a checkout of the repository before running the action.

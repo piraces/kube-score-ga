@@ -15,6 +15,12 @@ jobs:
         with:
           manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
+          output-file: 'output.txt'
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-1
+          path: output.txt
 
   test-action-job-linux:
     runs-on: ubuntu-latest
@@ -29,6 +35,12 @@ jobs:
           manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
           kube-score-version: '1.11.0'
+          output-file: 'output.txt'
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-2
+          path: output.txt
 
   test-action-job-macos:
     runs-on: macos-latest
@@ -43,3 +55,9 @@ jobs:
           manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
           kube-score-version: '1.11.0'
+          output-file: 'output.txt'
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-3
+          path: output.txt

@@ -1,11 +1,12 @@
-import os = require('os');
-import path = require('path');
-import axios = require('axios');
-import core = require('@actions/core');
-import io = require('@actions/io');
-import exec = require('@actions/exec');
-import tc = require('@actions/tool-cache');
-import glob = require('glob');
+import * as os from 'os';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as axios from 'axios';
+import * as core from '@actions/core';
+import * as io from '@actions/io';
+import * as exec from '@actions/exec';
+import * as tc from '@actions/tool-cache';
+import * as glob from 'glob';
 
 const MacOS = 'darwin';
 const Windows = 'win32';
@@ -58,11 +59,20 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     }
 }
 
-export async function runKubeScore(dirs: Array<string>): Promise<void> {
+export async function runKubeScore(dirs: Array<string>, outputFile: string): Promise<void> {
+    let stream: fs.WriteStream | undefined;
+    if (outputFile && outputFile.length > 0) {
+        stream = fs.createWriteStream(outputFile);
+    }
+
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
         const files = glob.sync(actualDir, {});
-        await processFilesWithKubeScore(files);
+        await processFilesWithKubeScore(files, stream);
+    }
+
+    if (stream) {
+        stream.end();
     }
 }
 
@@ -149,11 +159,18 @@ async function getLatestVersionTag(): Promise<string> {
         });
 }
 
-async function processFilesWithKubeScore(files: string[]) {
+async function processFilesWithKubeScore(files: string[], stream: fs.WriteStream | undefined) {
     for (const file of files) {
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
         try {
-            const exitCode = await exec.exec('kube-score', ['score', file]);
+            let exitCode: number;
+            if (stream) {
+                stream.write(`\n\n*** Analysis for file '${file}' ***\n\n`);
+                exitCode = await exec.exec('kube-score', ['score', file], { outStream: stream, errStream: stream });
+            } else {
+                exitCode = await exec.exec('kube-score', ['score', file]);
+            }
+
             if (exitCode !== 0) {
                 core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
             }
