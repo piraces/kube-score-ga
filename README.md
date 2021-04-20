@@ -50,7 +50,7 @@ This action does not contain outputs. Only if `output-file` is provided, then a 
 - name: Checkout
   uses: actions/checkout@v2
 - name: kube-score check
-  uses: piraces/kube-score-ga@v0.1.1
+  uses: piraces/kube-score-ga@v0.1.2
   with:
     manifests-folders: './manifests/*.yml'
 ```
