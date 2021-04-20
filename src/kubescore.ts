@@ -167,7 +167,7 @@ async function processFilesWithKubeScore(files: string[], stream: fs.WriteStream
             if (stream) {
                 stream.write(`*** Analysis for file '${file}' ***\n\n`);
                 exitCode = await exec.exec('kube-score', ['score', file], { outStream: stream, errStream: stream });
-                stream.write(`\n\n`);
+                stream.write(`\n\n*** End analysis for file '${file}' ***\n\n`);
             } else {
                 exitCode = await exec.exec('kube-score', ['score', file]);
             }
