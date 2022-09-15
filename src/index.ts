@@ -17,7 +17,7 @@ async function main() {
         await downloadKubeScore(kubeScoreVersion || undefined);
         await runKubeScore(foldersArray, outputFile);
     } catch (error) {
-        core.setFailed(error.message);
+        core.setFailed(error as Error);
     }
 }
 
