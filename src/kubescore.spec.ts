@@ -3,6 +3,7 @@ import * as axios from 'axios';
 import { getReleaseUrl } from './kubescore';
 
 jest.mock('os');
+jest.mock('axios');
 
 const ARMArchitecture = 'arm';
 const ARM64Architecture = 'arm64';
