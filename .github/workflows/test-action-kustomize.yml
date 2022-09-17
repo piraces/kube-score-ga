@@ -1,0 +1,64 @@
+name: Action CI (Kustomize)
+
+on: [push]
+
+jobs:
+  test-action-kustomize-job-win32:
+    runs-on: windows-latest
+    name: kube-score kustomize (Win32)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-kubectl@v3
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/kustomize
+      - name: kustomize build to standard template
+        run: kubectl kustomize sample-manifests\kustomize\overlays\production > ./out/kustomize/sample-kustomize.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/kustomize/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'
+
+  test-action-kustomize-job-linux:
+    runs-on: ubuntu-latest
+    name: kube-score kustomize (Linux)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-kubectl@v3
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/kustomize
+      - name: kustomize build to standard template
+        run: kubectl kustomize sample-manifests/kustomize/overlays/production > ./out/kustomize/sample-kustomize.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/kustomize/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'
+
+  test-action-kustomize-job-macos:
+    runs-on: macos-latest
+    name: kube-score kustomize (MacOS)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-kubectl@v3
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/kustomize
+      - name: kustomize build to standard template
+        run: kubectl kustomize sample-manifests/kustomize/overlays/production > ./out/kustomize/sample-kustomize.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/kustomize/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'
