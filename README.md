@@ -91,7 +91,7 @@ In this case we are doing the same behaviour of the following command:
 helm template .\sample-manifests\helm\example-chart | kube-score score -
 ```
 
-# Kustomize
+### Kustomize
 
 The case for Kustomize is mostly the same as Helm, we can previously build the desired template, redirect the output to a file and then executing the action. For example:
 
