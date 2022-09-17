@@ -34,7 +34,7 @@
     "@actions/io": "^1.1.2",
     "@actions/tool-cache": "^2.0.1",
     "axios": "^0.27.2",
-    "glob": "^8.0.3"
+    "glob": "^7.2.0"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",

@@ -1,0 +1,73 @@
+name: Action CI (Helm)
+
+on: [push]
+
+jobs:
+  test-action-helm-job-win32:
+    runs-on: windows-latest
+    name: kube-score Helm (Win32)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-helm@v3
+        name: Setup Helm
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/helm
+      - name: Helm Template to standard template
+        run: helm template .\sample-manifests\helm\example-chart > ./out/helm/sample-helm.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/helm/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'
+
+  test-action-helm-job-linux:
+    runs-on: ubuntu-latest
+    name: kube-score Helm (Linux)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-helm@v3
+        name: Setup Helm
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/helm
+      - name: Helm Template to standard template
+        run: helm template ./sample-manifests/helm/example-chart > ./out/helm/sample-helm.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/helm/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'
+
+  test-action-helm-job-macos:
+    runs-on: macos-latest
+    name: kube-score Helm (MacOS)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: azure/setup-helm@v3
+        name: Setup Helm
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
+        id: install
+      - name: Make temporal output directory
+        run: mkdir -p out/helm
+      - name: Helm Template to standard template
+        run: helm template ./sample-manifests/helm/example-chart > ./out/helm/sample-helm.yaml
+      - name: kube-score action step
+        uses: ./ # Uses an action in the root directory
+        id: ksga
+        with:
+          manifests-folders: './out/helm/*.yaml'
+          ignore-exit-code: 'true'
+          kube-score-version: '1.14.0'

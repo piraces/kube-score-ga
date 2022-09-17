@@ -34,7 +34,7 @@ jobs:
         with:
           manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
-          kube-score-version: '1.11.0'
+          kube-score-version: '1.14.0'
           output-file: 'output.txt'
       - name: upload artifact
         uses: actions/upload-artifact@v2
@@ -54,7 +54,7 @@ jobs:
         with:
           manifests-folders: './sample-manifests/sample-manifests/*.yaml,./sample-manifests/sample-policy-manifest/*.yaml'
           ignore-exit-code: 'true'
-          kube-score-version: '1.11.0'
+          kube-score-version: '1.14.0'
           output-file: 'output.txt'
       - name: upload artifact
         uses: actions/upload-artifact@v2
