@@ -50,7 +50,72 @@ This action does not contain outputs. Only if `output-file` is provided, then a 
 - name: Checkout
   uses: actions/checkout@v2
 - name: kube-score check
-  uses: piraces/kube-score-ga@v0.1.2
+  uses: piraces/kube-score-ga@v0.1.3
   with:
     manifests-folders: './manifests/*.yml'
+```
+
+## Usage with Helm or Kustomize
+[![Action CI (Helm)](https://github.com/piraces/kube-score-ga/actions/workflows/test-action-helm.yml/badge.svg)](https://github.com/piraces/kube-score-ga/actions/workflows/test-action-helm.yml)
+
+[![Action CI (Kustomize)](https://github.com/piraces/kube-score-ga/actions/workflows/test-action-kustomize.yml/badge.svg)](https://github.com/piraces/kube-score-ga/actions/workflows/test-action-kustomize.yml)
+
+**This action and kube-score itself can work with the output of [helm](https://helm.sh/) and [kustomize](https://kustomize.io/)**, some examples are provided in the workflows `.github/workflows/test-action-helm.yml` and `.github/workflows/test-action-kustomize.yml` which runs can be seen clicking in the badges above.
+
+**It is important to note that kube-score only parses static `yaml`**. Nevertheless, since `helm` and `kustomize` produce them, we can use the tool to scan them.
+
+### Helm
+
+In the case for Helm, we can previously build the desired template, redirect the output to a file and then executing the action. For example:
+
+```
+- name: Checkout
+  uses: actions/checkout@v2
+- uses: azure/setup-helm@v3
+  name: Setup Helm
+  with:
+    token: ${{ secrets.GITHUB_TOKEN }} # only needed if version is 'latest'
+  id: install
+- name: Make temporal output directory
+  run: mkdir -p out/helm
+- name: Helm Template to standard template
+  run: helm template .\sample-manifests\helm\example-chart > ./out/helm/sample-helm.yaml
+- name: kube-score check
+  uses: piraces/kube-score-ga@v0.1.3
+  with:
+    manifests-folders: './out/helm/*.yml'
+```
+
+In this case we are doing the same behaviour of the following command:
+```bash
+helm template .\sample-manifests\helm\example-chart | kube-score score -
+```
+
+# Kustomize
+
+The case for Kustomize is mostly the same as Helm, we can previously build the desired template, redirect the output to a file and then executing the action. For example:
+
+```
+- name: Checkout
+  uses: actions/checkout@v2
+- uses: azure/setup-kubectl@v3
+  id: install
+- name: Make temporal output directory
+  run: mkdir -p out/kustomize
+- name: kustomize build to standard template
+  run: kubectl kustomize sample-manifests/kustomize/overlays/production > ./out/kustomize/sample-kustomize.yaml
+- name: kube-score check
+  uses: piraces/kube-score-ga@v0.1.3
+  with:
+    manifests-folders: './out/kustomize/*.yml'
+```
+
+In this case we are doing the same behaviour of the following command:
+```bash
+kustomize build sample-manifests/kustomize/overlays/production | kube-score score -
+```
+
+Or with `kubectl`:
+```bash
+kubectl kustomize sample-manifests/kustomize/overlays/production | kube-score score -
 ```
