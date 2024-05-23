@@ -18,6 +18,9 @@ inputs:
   output-file:
     description: 'Generate an output file with the results of kube-score analysis for each manifest file (instead of printing in the standard output). Each analysis is separated by a text block.'
     default: '' # No output file
+  output-format:
+    description: 'Output format for the kube-score analysis results'
+    default: '' # No output file
 runs:
   using: 'node16'
   main: 'lib/index.js'

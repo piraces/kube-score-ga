@@ -44,6 +44,10 @@ Each analysis is separated by a text block.
 
 This action does not contain outputs. Only if `output-file` is provided, then a file will be generated but no handled as an output.
 
+### `output-format`
+
+*(Optional)*: Output format for the kube-score analysis results
+
 ## Example usage
 **Note**: it is necessary to perform a checkout of the repository before running the action.
 ```

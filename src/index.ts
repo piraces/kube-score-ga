@@ -7,6 +7,7 @@ async function main() {
         core.info(`Selected kube-score ${kubeScoreVersion || 'latest'} version!`);
         const manifestsFolders = core.getInput('manifests-folders');
         const outputFile = core.getInput('output-file');
+        const outputFormat = core.getInput('output-format');
 
         if (!manifestsFolders) {
             core.setFailed('[FATAL] Input for manifests-folders is mandatory');
@@ -15,7 +16,7 @@ async function main() {
         const foldersArray = manifestsFolders.split(',');
 
         await downloadKubeScore(kubeScoreVersion || undefined);
-        await runKubeScore(foldersArray, outputFile);
+        await runKubeScore(foldersArray, outputFile, outputFormat);
     } catch (error) {
         core.setFailed(error as Error);
     }

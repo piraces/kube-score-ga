@@ -59,10 +59,14 @@ export async function downloadKubeScore(version: string | undefined = undefined)
     }
 }
 
-export async function runKubeScore(dirs: Array<string>, outputFile: string): Promise<void> {
+export async function runKubeScore(dirs: Array<string>, outputFile: string, outputFormat: string): Promise<void> {
     let stream: fs.WriteStream | undefined;
     if (outputFile && outputFile.length > 0) {
         stream = fs.createWriteStream(outputFile);
+    }
+
+    if (outputFormat && outputFormat.length > 0) {
+        stream = fs.createWriteStream(outputFormat);
     }
 
     for (const dir of dirs) {
