@@ -65,14 +65,10 @@ export async function runKubeScore(dirs: Array<string>, outputFile: string, outp
         stream = fs.createWriteStream(outputFile);
     }
 
-    if (outputFormat && outputFormat.length > 0) {
-        stream = fs.createWriteStream(outputFormat);
-    }
-
     for (const dir of dirs) {
         const actualDir = path.join(process.cwd(), dir);
-        const files = glob.sync(actualDir, {});
-        await processFilesWithKubeScore(files, stream);
+        const files = glob.sync(`${actualDir}/*`, {}); // Actualiza el patrón glob según sea necesario
+        await processFilesWithKubeScore(files, outputFormat, stream);
     }
 
     if (stream) {
@@ -163,32 +159,31 @@ async function getLatestVersionTag(): Promise<string> {
         });
 }
 
-async function processFilesWithKubeScore(files: string[], stream: fs.WriteStream | undefined) {
+async function processFilesWithKubeScore(files: string[], outputFormat: string, stream?: fs.WriteStream) {
     for (const file of files) {
         core.info(`[KUBE-SCORE] Scanning file '${file}'...`);
         try {
             let exitCode: number;
+            const args = ['score', file, '--output-format', outputFormat];
             if (stream) {
                 stream.write(`*** Analysis for file '${file}' ***\n\n`);
-                exitCode = await exec.exec('kube-score', ['score', file], { outStream: stream, errStream: stream });
+                exitCode = await exec.exec('kube-score', args, { outStream: stream, errStream: stream });
                 stream.write(`\n\n*** End analysis for file '${file}' ***\n\n`);
             } else {
-                exitCode = await exec.exec('kube-score', ['score', file]);
+                exitCode = await exec.exec('kube-score', args);
             }
 
-            if (exitCode !== 0) {
+            if (exitCode === 0) {
                 core.info(`[KUBE-SCORE] Scan for file '${file}' succeeded!`);
-            }
-        } catch {
-            if (ignoreExitCode) {
-                core.error('[FAILED][KUBE-SCORE] Scan failed...');
             } else {
-                core.setFailed('[KUBE-SCORE] Scan failed...');
+                core.warning(`[KUBE-SCORE] Scan for file '${file}' had warnings or non-critical issues.`);
             }
-
+        } catch (error) {
+            core.error(`[FAILED][KUBE-SCORE] Scan failed for file '${file}': ${(error as Error).message}`);
             if (stream) {
                 stream.write(`\n\n*** End analysis for file '${file}' ***\n\n`);
             }
+            core.setFailed(`[KUBE-SCORE] Scan failed for file '${file}'`);
         }
 
         core.info(`[KUBE-SCORE] Scanned file '${file}'`);
